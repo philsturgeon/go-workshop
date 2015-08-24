@@ -2,13 +2,20 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	j "github.com/ricardolonga/jsongo"
 	"net/http"
 	"io"
 	"log"
 )
 
 func HelloServer(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "hello, world!\n")
+	json := j.Object().Put("name", "Ricardo Longa").
+		Put("idade", 28).
+		Put("owner", true).
+		Put("skills", j.Array().Put("Golang").
+		                       Put("Android"))
+
+	io.WriteString(w, json.Indent())
 }
 
 func main() {

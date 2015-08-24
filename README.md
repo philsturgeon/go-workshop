@@ -27,4 +27,6 @@ This workshop is going to be a learning experience for us all.
 
 **Part Four**
 
-1. 
+1. Calling from PHP
+2. HTTP Middlewares ala http://www.alexedwards.net/blog/making-and-using-middleware and  https://gist.github.com/alexedwards/6f9496caecb2996ac61d
+3. Other shit

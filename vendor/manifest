@@ -12,6 +12,12 @@
 			"repository": "https://github.com/gorilla/mux",
 			"revision": "ee1815431e497d3850809578c93ab6705f1a19f7",
 			"branch": "master"
+		},
+		{
+			"importpath": "github.com/ricardolonga/jsongo",
+			"repository": "https://github.com/ricardolonga/jsongo",
+			"revision": "0e08cda1dfff5c71e75b4a0ee44600cd3e423418",
+			"branch": "master"
 		}
 	]
 }
