@@ -17,13 +17,15 @@ This workshop is going to be a learning experience for us all.
 
 1. Installing elasticsearch and managing with forego
 2. Importing data into elasticsearch and getting it back out via postman
+  - http://blog.qbox.io/multi-field-partial-word-autocomplete-in-elasticsearch-using-ngrams
 3. Switch to using elasticseatch go client
+4. Output hardcodes elasticsearch search to logs
 
 **Part Three**
 
-1. Handling errors with HTTP for missing content or elasticsearch not being there
-2. Output elasticsearch data based on tags to logs
-3. Format that output as JSON and check in the browser
+1. Format that output as JSON and check in the browser
+2. Switch to using query strings
+3. Handling errors with HTTP for missing content
 
 **Part Four**
 

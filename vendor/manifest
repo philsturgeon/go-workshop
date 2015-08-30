@@ -18,6 +18,12 @@
 			"repository": "https://github.com/ricardolonga/jsongo",
 			"revision": "0e08cda1dfff5c71e75b4a0ee44600cd3e423418",
 			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/olivere/elastic.v2",
+			"repository": "https://gopkg.in/olivere/elastic.v2",
+			"revision": "f4b7e6802f83621ea8a31fde62b9e6eddecb7b11",
+			"branch": "master"
 		}
 	]
 }

@@ -23,6 +23,8 @@
 # For information on supported formats and syntax for the config file, see
 # <http://elasticsearch.org/guide/en/elasticsearch/reference/current/setup-configuration.html>
 
+# CUSTOM
+action.auto_create_index: false
 
 ################################### Cluster ###################################
 
