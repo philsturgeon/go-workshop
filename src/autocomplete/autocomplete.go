@@ -4,8 +4,6 @@ import (
 	"github.com/gorilla/mux"
 	"gopkg.in/olivere/elastic.v2"
 	"log"
-	"io"
-	"encoding/json"
 	"errors"
 	"net/http"
 	"time"
@@ -17,16 +15,6 @@ func init() {
 	if err := establishElasticConnection(); err != nil {
 		log.Panicln(err)
 	}
-}
-
-func respondWithJSON(w http.ResponseWriter, rootKey string, body interface{}, statusCode int) {
-	data := make(map[string]interface{}, 1)
-	data[rootKey] = body
-	jsonString, _ := json.Marshal(data)
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(statusCode)
-	io.WriteString(w, string(jsonString))
 }
 
 func createElasticClient() (*elastic.Client, error) {
@@ -61,23 +49,9 @@ func establishElasticConnection() error {
 	return err
 }
 
-func HelloServer(w http.ResponseWriter, req *http.Request) {
-
-	vehicles, err := searchForVehicles(elasticClient, "fiat")
-	if (err != nil) {
-		log.Println(err)
-		io.WriteString(w, "Shit went wrong")
-		return
-	}
-
-	respondWithJSON(w, "vehicles", vehicles, http.StatusOK)
-}
-
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/", HelloServer)
-	// r.HandleFunc("/products", ProductsHandler)
-	// r.HandleFunc("/articles", ArticlesHandler)
+	router.HandleFunc("/vehicles", vehicleHandler)
 
 	log.Printf("Running server on 0.0.0.0:8080")
 	log.Fatal(http.ListenAndServe(":8080", router))

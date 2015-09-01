@@ -1,2 +1,2 @@
-web: hello
-elastic: elasticsearch --config=elasticsearch.yml
+web: autocomplete
+elastic: elasticsearch --config=config/elasticsearch.yml

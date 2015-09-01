@@ -24,6 +24,8 @@ This workshop is going to be a learning experience for us all.
 **Part Three**
 
 1. Format that output as JSON and check in the browser
+  - respond with JSON
+  - Accept status codes
 2. Switch to using query strings
 3. Handling errors with HTTP for missing content
 
@@ -31,4 +33,4 @@ This workshop is going to be a learning experience for us all.
 
 1. Calling from PHP
 2. HTTP Middlewares ala http://www.alexedwards.net/blog/making-and-using-middleware and  https://gist.github.com/alexedwards/6f9496caecb2996ac61d
-3. Other shit
+3. Using `.env` for useful settings
