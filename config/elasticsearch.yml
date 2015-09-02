@@ -148,7 +148,7 @@ index.number_of_replicas: 0
 
 # Path to directory where to store index data allocated for this node.
 #
-path.data: /usr/local/var/elasticsearch/
+path.data: /opt/boxen/homebrew/var/elasticsearch/
 #
 # Can optionally include more than one location, causing data to be striped across
 # the locations (a la RAID 0) on a file level, favouring locations with most free
@@ -162,7 +162,7 @@ path.data: /usr/local/var/elasticsearch/
 
 # Path to log files:
 #
-path.logs: /usr/local/var/log/elasticsearch/
+path.logs: /opt/boxen/homebrew/var/log/elasticsearch/
 
 # Path to where plugins are installed:
 #

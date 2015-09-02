@@ -2,18 +2,26 @@ package main
 
 import (
 	"log"
-	// "errors"
+	"errors"
 	"github.com/gorilla/mux"
-	// "gopkg.in/olivere/elastic.v2"
+	"gopkg.in/olivere/elastic.v2"
 	"net/http"
-	"io"
-	// "time"
 )
 
-// var elasticClient *elastic.Client
+var elasticClient *elastic.Client
+
+func init() {	
+	var err error
+	elasticClient, err = createElasticClient()
+	if err != nil {
+		panic(err)
+	}
+}
 
 func vehicleSearch(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "Hello")
+	vehicles, _ := searchForVehicles(elasticClient, req.FormValue("search"))
+	
+	renderData(w, http.StatusOK, "vehicles", vehicles)
 }
 
 func main() {
@@ -24,23 +32,18 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-// func createElasticClient() (*elastic.Client, error) {
-// 	// Check for an elastic URL, which is probably missing in development
-// 	// elasticURL := os.Getenv("ELASTIC_URL")
-// 	// if elasticURL == "" {
-// 	// 	elasticURL = "http://localhost:9200"
-// 	// }
-// 	client, err := elastic.NewClient()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	if res, err := client.ClusterHealth().WaitForStatus("red").Timeout("15s").Do(); err != nil {
-// 		return nil, err
-// 	} else if res.TimedOut {
-// 		return nil, errors.New("time out waiting for cluster status red")
-// 	}
-// 	return client, nil
-// }
+func createElasticClient() (*elastic.Client, error) {
+	client, err := elastic.NewClient()
+	if err != nil {
+		return nil, err
+	}
+	if res, err := client.ClusterHealth().WaitForStatus("red").Timeout("15s").Do(); err != nil {
+		return nil, err
+	} else if res.TimedOut {
+		return nil, errors.New("time out waiting for cluster status red")
+	}
+	return client, nil
+}
 
 // func establishElasticConnection() error {
 // 	var err error
