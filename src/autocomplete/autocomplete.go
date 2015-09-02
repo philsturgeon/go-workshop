@@ -7,6 +7,7 @@ import (
 	"gopkg.in/olivere/elastic.v2"
 	"net/http"
 	"time"
+	"os"
 )
 
 var elasticClient *elastic.Client
@@ -25,13 +26,14 @@ func vehicleSearch(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 	router := mux.NewRouter()
-	
-	vehicleSearchHandler := http.HandlerFunc(vehicleSearch)
-	
-	router.Handle("/vehicles", corsHandler(vehicleSearchHandler))
 
-	log.Printf("Running server on 0.0.0.0:8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	vehicleSearchHandler := http.HandlerFunc(vehicleSearch)
+	router.Handle("/vehicles", corsHandler(vehicleSearchHandler))
+	
+	port := os.Getenv("PORT")
+	
+	log.Printf("Running server on 0.0.0.0:" + port)
+	log.Fatal(http.ListenAndServe(":" + port, router))
 }
 
 func createElasticClient() (*elastic.Client, error) {
