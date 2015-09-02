@@ -1,23 +1,27 @@
 package main
 
 import (
+	"log"
 	// "errors"
-	// "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 	// "gopkg.in/olivere/elastic.v2"
-	// "log"
-	// "net/http"
+	"net/http"
+	"io"
 	// "time"
 )
 
 // var elasticClient *elastic.Client
 
+func vehicleSearch(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, "Hello")
+}
+
 func main() {
-	// router := mux.NewRouter()
-	// vehicleSearchHandler = http.HandlerFunc(vehicleSearch)
-	// router.Handle("/vehicles", corsHandler())
-	//
-	// log.Printf("Running server on 0.0.0.0:8080")
-	// log.Fatal(http.ListenAndServe(":8080", router))
+	router := mux.NewRouter()
+	router.HandleFunc("/", vehicleSearch)
+
+	log.Printf("Running server on 0.0.0.0:8080")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 // func createElasticClient() (*elastic.Client, error) {
