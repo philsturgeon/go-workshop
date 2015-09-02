@@ -1,0 +1,120 @@
+brew install elasticsearch
+brew install go
+
+# Install GB for project-based builds
+go get github.com/constabulary/gb/...
+
+# Install dependencies
+gb vendor fetch github.com/gorilla/mux
+gb vendor fetch github.com/ricardolonga/jsongo
+gb vendor fetch gopkg.in/olivere/elastic.v2 
+
+# Install fswatch to liveload changes and recompile
+brew install fswatch
+
+
+Procfile
+
+```
+web: fswatch --exclude=.git ./src ./vendor | (while read; do gb build all; autocomplete; done)
+```
+
+
+
+DONT LOOK AT ME
+
+PUT /vehicle
+
+{
+  "settings":{
+    "analysis":{
+      "filter":{
+        "nGram_filter":{
+          "type":"nGram",
+          "min_gram":2,
+          "max_gram":20,
+          "token_chars":[
+            "letter",
+            "digit",
+            "punctuation",
+            "symbol"
+          ]
+        }
+      },
+      "analyzer":{
+        "nGram_analyzer":{
+          "type":"custom",
+          "tokenizer":"whitespace",
+          "filter":[
+            "lowercase",
+            "asciifolding",
+            "nGram_filter"
+          ]
+        },
+        "whitespace_analyzer":{
+          "type":"custom",
+          "tokenizer":"whitespace",
+          "filter":[
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
+  "mappings":{
+    "vehicle":{
+      "_all":{
+        "index_analyzer":"nGram_analyzer",
+        "search_analyzer":"whitespace_analyzer"
+      },
+      "properties":{
+        "make":{
+          "type":"string"
+        },
+        "model":{
+          "type":"string"
+        },
+        "year":{
+          "type":"integer",
+          "index":"no",
+          "include_in_all":false
+        },
+        "primary_fuel":{
+          "type":"string"
+        },
+        "vehicle_class":{
+          "type":"string"
+        },
+        "city_mpg":{
+          "type":"string",
+          "index":"no",
+          "include_in_all":false
+        },
+        "highway_mpg":{
+          "type":"string",
+          "index":"no",
+          "include_in_all":false
+        },
+        "comb_mpg":{
+          "type":"string",
+          "index":"no",
+          "include_in_all":false
+        }
+      }
+    }
+  }
+}
+
+POST /vehicle/vehicle
+
+{
+  "make" : "Ford",
+  "model" : "Mustang",
+  "year" : 1989,
+  "primary_fuel" : "premium",
+  "vehicle_class" : "Two-door",
+  "city_mpg" : "2",
+  "highway_mpg" : "4",
+  "comb_mpg" : "3"
+}
