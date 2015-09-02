@@ -6,15 +6,14 @@ import (
 	"github.com/gorilla/mux"
 	"gopkg.in/olivere/elastic.v2"
 	"net/http"
+	"time"
 )
 
 var elasticClient *elastic.Client
 
-func init() {	
-	var err error
-	elasticClient, err = createElasticClient()
-	if err != nil {
-		panic(err)
+func init() {
+	if err := establishElasticConnection(); err != nil {
+		log.Panicln(err)
 	}
 }
 
@@ -26,7 +25,10 @@ func vehicleSearch(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/", vehicleSearch)
+	
+	vehicleSearchHandler := http.HandlerFunc(vehicleSearch)
+	
+	router.Handle("/vehicles", corsHandler(vehicleSearchHandler))
 
 	log.Printf("Running server on 0.0.0.0:8080")
 	log.Fatal(http.ListenAndServe(":8080", router))
@@ -45,31 +47,24 @@ func createElasticClient() (*elastic.Client, error) {
 	return client, nil
 }
 
-// func establishElasticConnection() error {
-// 	var err error
-// 	for i := 0; i < 10; i++ {
-// 		elasticClient, err = createElasticClient()
-// 		if err != nil {
-// 			log.Println("Sleeping one second to wait for elasticsearch")
-// 			time.Sleep(time.Second)
-// 		} else {
-// 			return nil
-// 		}
-// 	}
-// 	return err
-// }
+func establishElasticConnection() error {
+	var err error
+	for i := 0; i < 10; i++ {
+		elasticClient, err = createElasticClient()
+		if err != nil {
+			log.Println("Sleeping one second to wait for elasticsearch")
+			time.Sleep(time.Second)
+		} else {
+			return nil
+		}
+	}
+	return err
+}
 
-// func init() {
-// elasticClient, err = createElasticClient()
 
-// if err := establishElasticConnection(); err != nil {
-// 	log.Panicln(err)
-// }
-// }
-
-// func corsHandler(next http.Handler) http.Handler {
-//   return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-//     w.Header().Set("Access-Control-Allow-Origin", "*")
-//     next.ServeHTTP(w, r)
-//   })
-// }
+func corsHandler(next http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    next.ServeHTTP(w, r)
+  })
+}
